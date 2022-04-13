@@ -10,6 +10,9 @@ def displaysound_mp3(temp, maskPattern, TEMP_THRESHOLD):
         playsound('sound/not_pass.mp3')
         playsound('sound/high_temperature.mp3')
         
+    elif(temp < 30.0):
+        playsound('sound/not_pass.mp3')
+        
     elif (temp <= TEMP_THRESHOLD) and (maskPattern == 'w'):
         #ผ่าน
         playsound('sound/pass.mp3')

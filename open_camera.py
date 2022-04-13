@@ -29,7 +29,7 @@ from trt_mtcnn import main_detect
 save_maskpattern_api_url = "http://35.213.141.41:8080/facemask/savemaskpattern"
 extract_temperature_api_url = "http://35.213.141.41:8080/temperature/extract"
 
-TEMP_CARIBRATION = 10.0
+TEMP_CARIBRATION = 6.0
 
 #  สร้าง Thread ที่ return ค่าได้
 class amg8833 :
@@ -162,7 +162,6 @@ def opencamera():
     
     while (cap.isOpened()):
         check, frame = cap.read()
-        # image_predict = 
         frame = cv2.resize(frame, (650,720))
         if(isFirstPredictedImag == True) and (isFirstNumberPredicted <= 1):
             print('sleep')
@@ -179,10 +178,10 @@ def opencamera():
         
         if check == True:
             image_detect = frame[100:-100, 80:-80]
-            image_predict = frame[150:-220, 120:-120]
+            image_predict = image_detect
+            # image_predict = frame[140:-130, 80:-80]
             image_msg = cv2.resize(image_detect, (650, 720))
             image_detect = cv2.resize(image_detect, (650, 720))
-            image_predict = cv2.resize(image_predict, (650, 720))
             image_write_result = image_detect
             
             # overlay frame and image
@@ -203,16 +202,17 @@ def opencamera():
             elif value_detect_face == 1 :
                 isPredicted = False
                 isCapture = True
-                
+                            
                 # using sensor tempreture
                 pixels, unit_temp = sensor.get_tempreture()
                 temp = getTemp(pixels)
-                # temp = 36.5
+                # temp = 37.9
                 print('temp ',temp)
                 
                 # get tempreture on api
                 # temperature_database = 37.5
                 temperature_database = extract_temperature_api() #ดึงอุณหภูมิจาก data base
+                # print('temperature_database ',temperature_database)
                 
                 # predict imagee
                 maskPattern = main(image_predict)
@@ -248,11 +248,6 @@ def opencamera():
                 imag1_display.append(image)
                 imag2_display = image
     
-                # thr_sound = ThreadWithReturnValue(target=displaysound_mp3, args=(temp, maskPattern))
-                # thr_sound.start()
-                
-                # if(isFirstPredictedImag == True) and (isFirstNumberPredicted > 1):
-                #     displaysound_mp3(temp, maskPattern)
                 displaysound_mp3(temp, maskPattern, temperature_database)
                 
                 save_maskpattern_api(maskPattern, temp)
@@ -271,8 +266,6 @@ def opencamera():
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
             
-            frame = []
-            
             if(isFirstCaptureImag == True):
                 if(isCapture == True):
                     StackedImages = stackImages(([imag1_display[0], imag1_display[1]]), 0.6)
@@ -281,7 +274,6 @@ def opencamera():
                     StackedImages = stackImages(([imag1_display[0], imag2_display]), 0.6)
                     cv2.imshow("PROJECT-C10 GUI CAMERA", StackedImages)
             else:
-                # print(imag1_display[0].shape, imageUser.shape)
                 StackedImages = stackImages(([imag1_display[0], imageUser]), 0.6)
                 cv2.imshow("PROJECT-C10 GUI CAMERA", StackedImages)
         else:

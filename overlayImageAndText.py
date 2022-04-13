@@ -67,10 +67,10 @@ def thermal_msg(frame, temp, TEMP_THRESHOLD):
         cv2.putText(frame, 'No heat sensor, please re-scan.', (120, 52), cv2.FONT_HERSHEY_TRIPLEX, 0.7, (255, 255, 255), 1, cv2.LINE_AA)                
     elif temp > TEMP_THRESHOLD:
         cv2.rectangle(frame, (0, 30), (650, 60), (0,0,255), -1)
-        cv2.putText(frame, 'Temperature '+ str(round(temp, 1)) + 'C', (230, 52), cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 0), 1, cv2.LINE_AA)
+        cv2.putText(frame, 'Temperature '+ str(round(temp, 1)) + ' C', (230, 52), cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 0), 1, cv2.LINE_AA)
     else:
         cv2.rectangle(frame, (0, 30), (650, 60), (255,144,30), -1)
-        cv2.putText(frame, 'Temperature '+ str(round(temp, 1)) + 'C', (230, 52), cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 0), 1, cv2.LINE_AA)
+        cv2.putText(frame, 'Temperature '+ str(round(temp, 1)) + ' C', (230, 52), cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 0, 0), 1, cv2.LINE_AA)
 
     return frame
 
